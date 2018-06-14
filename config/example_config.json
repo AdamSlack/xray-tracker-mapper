@@ -5,7 +5,7 @@
         "port":5432
     },
     "koala": {
-        "user_name":"postgres",
+        "user":"postgres",
         "password":"password"
     }
 }

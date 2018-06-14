@@ -4,9 +4,9 @@ const pg = require('pg');
 
 class DB {
     constructor(module) {
-        const db_config = config.database;
-        db_config.user = config[module].db.user;
-        db_config.password = config[module].db.password;
+        const db_config = config.db;
+        db_config.user = config[module].user;
+        db_config.password = config[module].password;
         db_config.max = 10;
         db_config.idleTimeoutMillis;
 
@@ -89,7 +89,7 @@ class DB {
     async selectCompanyID(companyName) {
         console.log(`Selecting ID for Company Name: ${companyName}`);
         try{
-            const companyRows = await ("select id from companies where company_name = $1", [companyName]);
+            const companyRows = await this.query("select id from companies where company_name = $1", [companyName]);
             if(companyRows.rowCount == 0) {
                 return -1;
             }
@@ -104,18 +104,17 @@ class DB {
     async selectHostNameID(hostName) {
         console.log(`Selecting ID for Host Name: ${hostName}`);
         try{
-            const hostRows = await ("select id from host_names where host_name = $1", [hostName]);
+            const hostRows = await this.query("select id from host_names where host_name = $1", [hostName]);
             if(hostRows.rowCount == 0) {
                 return -1;
             }
             return hostRows[0].id;
-        }   
+        }
         catch(err) {
-            console.log(`Error selecing ID for Host Name: ${hostName}`);
+            console.log(`Error selecting ID for Host Name: ${hostName}`);
             throw err;
         }
     }
-
 
     async insertCompanyHostPair(companyName, hostName) {
         console.log(`Inserting Company Host Pair - Company Name: ${companyName}, Host Name: ${hostName}`);
@@ -131,9 +130,33 @@ class DB {
                 await this.insertCompanyName(companyName);
                 companyID = await this.selectCompanyID(companyName)
             }
+
+            let hostCompany = await this.selectHostsCompany(hostName);
+            if (hostCompany != -1) {
+                console.log(`${hostName} is already associated with a company (ID=${hostCompany}`);
+                return;
+            }
+
+            await this.query("insert into host_company_mappings(host_name, company_name) values($1, $2)", [hostName, companyName]);
         }
         catch(err) {
-            
+            console.log(`Error inserting Host (${hostName}) and Company (${companyName}) Pair. Error: ${err}`)
+        }
+    }
+
+    async selectHostsCompany(hostName) {
+        console.log(`Selecting the Company ID associated with the Host Name: ${hostName}`);
+        try {
+            const companyIDs = await this.query("select company_id from host_company_mappings where host_name_id = $1", [hostName]);
+            if (companyIDs.rowCount == 0) {
+                return -1;
+            }
+            return companyIDs[0].company_id;
+        }
+        catch(err) {
+            console.log(`Error Selecting Company ID associated with Host Name: ${hostName}`);
         }
     }
 }
+
+module.exports = DB;

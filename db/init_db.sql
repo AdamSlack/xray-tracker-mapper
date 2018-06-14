@@ -13,9 +13,8 @@ create table companies(
 
 create table host_company_mappings(
     id              serial      not null,
-    hostname_id     serial      not null references host_names(id),
-    company_id      serial      not null references companies(id),
-    primary key (hostname_id, company_id)
+    host_name_id     serial      not null references host_names(id) primary key,
+    company_id      serial      not null references companies(id)
 );
 
 commit;
