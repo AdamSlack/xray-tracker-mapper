@@ -93,10 +93,25 @@ class DB {
             if(companyRows.rowCount == 0) {
                 return -1;
             }
-            return companyRows[0].id;
+            return companyRows.rows[0].id;
         }   
         catch(err) {
             console.log(`Error selecing ID for Company Name: ${companyName}`);
+            throw err;
+        }
+    }
+    
+    async selectCompanyName(companyID) {
+        console.log(`Selecting Name for Company ID: ${companyID}`);
+        try{
+            const companyRows = await this.query("select company_name from companies where id = $1", [companyID]);
+            if(companyRows.rowCount == 0) {
+                return -1;
+            }
+            return companyRows.rows[0].id;
+        }   
+        catch(err) {
+            console.log(`Error selecing NAme for Company ID: ${companyID}`);
             throw err;
         }
     }
@@ -108,7 +123,7 @@ class DB {
             if(hostRows.rowCount == 0) {
                 return -1;
             }
-            return hostRows[0].id;
+            return hostRows.rows[0].id;
         }
         catch(err) {
             console.log(`Error selecting ID for Host Name: ${hostName}`);
@@ -147,11 +162,19 @@ class DB {
     async selectHostsCompany(hostName) {
         console.log(`Selecting the Company ID associated with the Host Name: ${hostName}`);
         try {
-            const companyIDs = await this.query("select company_id from host_company_mappings where host_name_id = $1", [hostName]);
+
+            const hostID = await this.selectHostNameID(hostName);
+            if (hostID == -1) {
+                console.log(`Hostname (${hostName}) Not found.`);
+                return -1;
+            }
+
+            const companyIDs = await this.query("select company_id from host_company_mappings where host_name_id = $1", [hostID]);
             if (companyIDs.rowCount == 0) {
                 return -1;
             }
-            return companyIDs[0].company_id;
+
+            return companyIDs.rows[0].company_id;
         }
         catch(err) {
             console.log(`Error Selecting Company ID associated with Host Name: ${hostName}`);
