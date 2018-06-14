@@ -1,6 +1,9 @@
 const DB = require("../db/db")
 const db = new DB('koala');
 const express = require("express");
+const config = require("../config/config.json");
+const whois = require('whois-json')
+const url = require('url');
 
 const app = express();
 
@@ -9,25 +12,19 @@ app.get('/', (req, res) => {
 });
 
 app.get('/host/:hostName', async (req, res) => {
-    let hostName = req.params.hostName;
-    let hostID = await db.selectHostNameID(hostName);
-    let companyID = await db.selectHostsCompany(hostName);
+    let hostID = await db.selectHostNameID(domainName);
+    let companyID = await db.selectHostsCompany(domainName);
     let companyName = await db.selectCompanyName(companyID);
+    
+    let results = await whois(hostName);
+    
     res.send({
-            "host_name": hostName,
+            "host_name": domainName,
             "host_id": hostID,
             "company_id": companyID,
-            "company_name": companyName
+            "company_name": companyName,
+            "whois": results.registrantOrganization
         });
 });
 
-app.listen(8080, () => console.log("listening on port 8080"));
-
-
-async function main() {
-    let HostName = "example.com";
-    let results = await db.selectHostNameID(HostName);
-    console.log(`ID for ${HostName} is: ${results}`);
-}
-
-main();
+app.listen(config.api.port, () => console.log(`listening on port ${config.api.port}`));

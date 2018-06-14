@@ -5,7 +5,9 @@
   "main": "index.js",
   "dependencies": {
     "express": "^4.16.3",
-    "pg": "^7.4.3"
+    "pg": "^7.4.3",
+    "tldjs": "^2.3.1",
+    "whois-json": "^2.0.2"
   },
   "devDependencies": {},
   "scripts": {

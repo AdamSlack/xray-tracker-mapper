@@ -1,4 +1,7 @@
 {
+    "api": {
+        "port":8080
+    },
     "db": {
         "database":"tracker_mapper",
         "host":"localhost",
