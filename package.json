@@ -1,0 +1,23 @@
+{
+  "name": "hosttrackermapper",
+  "version": "1.0.0",
+  "description": "Service for the mapping of host names to company names",
+  "main": "index.js",
+  "dependencies": {
+    "pg": "^7.4.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adamslack/hostTrackerMapper.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adamslack/hostTrackerMapper/issues"
+  },
+  "homepage": "https://github.com/adamslack/hostTrackerMapper#readme"
+}
