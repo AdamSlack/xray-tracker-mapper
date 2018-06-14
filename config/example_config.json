@@ -1,0 +1,11 @@
+{
+    "database": {
+        "database_name":"tracker_mapper",
+        "host":"localhost",
+        "port":5432
+    },
+    "koala": {
+        "user_name":"postgres",
+        "password":"password"
+    }
+}
