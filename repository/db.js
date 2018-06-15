@@ -11,6 +11,7 @@ class DB {
             max: 20,
             connectionTimeoutMillis: 1000
         }
+        console.log(process.env.DATABASE_URL)
         this.pool = new pg.Pool(config);
         this.pool.on('error', (err) => {
             console.log("Client Error:", err.message, err.stack);

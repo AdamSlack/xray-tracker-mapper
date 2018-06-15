@@ -1,4 +1,4 @@
-const DB = require("../db/db");
+const DB = require("../repository/db");
 const db = new DB();
 
 const whois = require("whois-json");

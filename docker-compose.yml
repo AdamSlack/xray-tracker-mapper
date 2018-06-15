@@ -5,19 +5,19 @@ services:
     build: .
     ports:
       - "$API_PORT:$API_PORT"
-    command: bash -c 'npm start'
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; npm start'
     env_file: .env
     depends_on:
       - db
     environment:
-      - DATABASE_URL=postgres://postgres:password@db:12345/tracker_mapper
+      - DATABASE_URL="postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${POSTGRES_PORT}/${POSTGRES_DB}"
       - PORT=8080
   db:
     image: postgres:9.4
     env_file: .env
     volumes:
-      - ./db/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
-      - POSTGRES_USER=$POSTGRES_USER
-      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
-      - POSTGRES_DB=$POSTGRES_DB
+      - "POSTGRES_USER=${POSTGRES_USER}"
+      - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
+      - "POSTGRES_DB=${POSTGRES_DB}"
