@@ -140,7 +140,7 @@ class DB {
                 hostID = await this.selectHostNameID(hostName);
             }
 
-            let companyID = await this.selectCompanyID(companyID);
+            let companyID = await this.selectCompanyID(companyName);
             if (companyID == -1) {
                 await this.insertCompanyName(companyName);
                 companyID = await this.selectCompanyID(companyName)
@@ -152,7 +152,7 @@ class DB {
                 return;
             }
 
-            await this.query("insert into host_company_mappings(host_name, company_name) values($1, $2)", [hostName, companyName]);
+            await this.query("insert into host_company_mappings(host_name_id, company_id) values($1, $2)", [hostID, companyID]);
         }
         catch(err) {
             console.log(`Error inserting Host (${hostName}) and Company (${companyName}) Pair. Error: ${err}`)
