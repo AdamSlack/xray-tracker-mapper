@@ -33,6 +33,10 @@ class Mapper {
         };
     }
 
+    shortenDomain(domain) {
+        return domain.substring(domain.indexOf('.') + 1);
+    }
+
     async mapHostNameToCompany(hostName) {
         let companyId = await db.selectHostsCompany(hostName);
         if(companyId != -1) {
@@ -43,8 +47,15 @@ class Mapper {
         //let companyName = await whoIsLookUpName(hostName);
         let whoIsResult = await whois(hostName);
         let whoIsCompany = whoIsResult.registrantOrganization;
-        console.log(whoIsCompany);
 
+        let shortenedHostName = this.shortenDomain(hostName);    
+        while(whoIsCompany == undefined && shortenedHostName.split('.').length > 1) {
+            console.log(`Searching for company that might match the shortend version of hostname: ${hostName}, Shortened HostName: ${shortenedHostName}`);
+            whoIsResult = await whois(shortenedHostName);
+            whoIsCompany = whoIsResult.registrantOrganization;
+            shortenedHostName = this.shortenDomain(shortenedHostName);
+        }
+        
         if(whoIsCompany == undefined) {
             return -1;
         }
