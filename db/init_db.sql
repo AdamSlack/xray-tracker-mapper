@@ -3,12 +3,14 @@ begin;
 
 create table host_names(
     id              serial      not null primary key,
-    host_name      text        not null
+    host_name       text        not null,
+    unique(host_name)
 );
 
 create table companies(
     id              serial      not null primary key,
-    company_name    text        not null
+    company_name    text        not null,
+    unique(company_name)
 );
 
 create table host_company_mappings(

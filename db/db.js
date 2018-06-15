@@ -79,7 +79,7 @@ class DB {
             }
         
             console.log(`${companyName} not found in table, inserting it now.`);
-            await this.query('insert into host_names (host_name) values($1)', [companyName]);
+            await this.query('insert into companies (company_name) values($1)', [companyName]);
         }
         catch(err) {
             console.log(`Error inserting Company Name: ${companyName} - Error: ${err}`);
@@ -108,7 +108,7 @@ class DB {
             if(companyRows.rowCount == 0) {
                 return -1;
             }
-            return companyRows.rows[0].id;
+            return companyRows.rows[0].company_name;
         }   
         catch(err) {
             console.log(`Error selecing NAme for Company ID: ${companyID}`);
