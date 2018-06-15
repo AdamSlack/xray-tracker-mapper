@@ -1,5 +1,5 @@
 const DB = require("../db/db");
-const db = new DB('koala');
+const db = new DB();
 
 const whois = require("whois-json");
 

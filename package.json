@@ -6,12 +6,7 @@
   "dependencies": {
     "express": "^4.16.3",
     "pg": "^7.4.3",
-    "tldjs": "^2.3.1",
     "whois-json": "^2.0.2"
-  },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -22,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/adamslack/hostTrackerMapper/issues"
   },
-  "homepage": "https://github.com/adamslack/hostTrackerMapper#readme"
+  "homepage": "https://github.com/adamslack/hostTrackerMapper#readme",
+  "scripts": {
+    "start": "node ./api/trackerMapperAPI.js"
+  }
 }

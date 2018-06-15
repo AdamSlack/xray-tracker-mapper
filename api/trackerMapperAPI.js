@@ -1,12 +1,11 @@
 const DB = require("../db/db")
-const db = new DB('koala');
+const db = new DB();
 
 const Mapper = require("../mapper/mapper");
 const mapper = new Mapper();
 
 const express = require("express");
-const config = require("../config/config.json");
-
+const port = process.env.API_PORT;
 const app = express();
 
 app.get('/', (req, res) => {
@@ -18,4 +17,4 @@ app.get('/host/:hostName', async (req, res) => {
     res.send(mapping);
 });
 
-app.listen(config.api.port, () => console.log(`listening on port ${config.api.port}`));
+app.listen(port, () => console.log(`API is running and listening on port ${port}`));

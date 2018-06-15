@@ -1,16 +1,17 @@
 "use strict";
-const config = require('../config/config.json');
 const pg = require('pg');
 
 class DB {
-    constructor(module) {
-        const db_config = config.db;
-        db_config.user = config[module].user;
-        db_config.password = config[module].password;
-        db_config.max = 10;
-        db_config.idleTimeoutMillis;
-
-        this.pool = new pg.Pool(db_config);
+    constructor() {
+        let config = {
+            user: process.env.POSTGRES_USER,
+            password: process.env.POSTGRES_PASSWORD,
+            host: process.env.POSTGRES_HOST,
+            port: process.env.POSTGRES_PORT,
+            max: 20,
+            connectionTimeoutMillis: 1000
+        }
+        this.pool = new pg.Pool(config);
         this.pool.on('error', (err) => {
             console.log("Client Error:", err.message, err.stack);
         });
