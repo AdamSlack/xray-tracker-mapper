@@ -10,7 +10,7 @@ const config = require("../config/config.json");
 const app = express();
 
 app.get('/', (req, res) => {
-    res.send("Hello World");
+    res.send("X-Ray Tracker Mapper.");
 });
 
 app.get('/host/:hostName', async (req, res) => {
