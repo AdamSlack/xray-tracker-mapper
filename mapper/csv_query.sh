@@ -9,6 +9,6 @@ do
     echo -e "\n\n$hosts" >> ./results.txt
     curl "localhost:8080/host/$hosts" >> ./results.txt
     
-    sleep 2.5s
+    sleep 1s
 done < $INPUT
 IFS=$OLDIFS

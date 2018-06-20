@@ -16,12 +16,26 @@ app.get('/', (req, res) => {
 app.get('/host/:hostName', async (req, res) => {
     let headersSent = false;
     process.on('uncaughtException', function (err) {
-        res.send({"UNCAUGHT_ERROR":err});
-        headersSent = true;
+        if(!headersSent){
+            res.send({"UNCAUGHT_ERROR":err});
+            headersSent = true;
+        }
     });
     try{
         let mapping = await mapper.processHostCompanyRequest(req.params.hostName);  
-        res.send(mapping);
+        if(!headersSent){
+            if(mapping.companyID != undefined
+            && mapping.companyName != undefined
+            && mapping.hostID != undefined
+            && mapping.hostName != undefined) {
+                res.send(mapping);
+
+            }
+            else {
+                res.send({"details":"unknown"});
+            }
+            headersSent = true;
+        }
     }
     catch(err){
         if(!headersSent) {
