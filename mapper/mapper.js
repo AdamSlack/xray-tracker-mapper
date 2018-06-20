@@ -32,9 +32,25 @@ class Mapper {
             "companyID":mappedCompanyID
         };
     }
+    async getRegistrantOrganisation(whoIsData) {
+        if(whoIsData.registrantOrganization == undefined) {
+            return whoIsData.registrar;
+        }
+        return whoIsData.registrantOrganization;
+    }
 
     shortenDomain(domain) {
         return domain.substring(domain.indexOf('.') + 1);
+    }
+
+    async queryWhoIs(name) {
+        try{
+            return await whois(name);
+        }
+        catch(err) {
+            console.log(`Error Querying Who Is for: ${name}. Error Message: ${err}`);
+            return
+        }
     }
 
     async mapHostNameToCompany(hostName) {
@@ -45,14 +61,14 @@ class Mapper {
         }
         
         //let companyName = await whoIsLookUpName(hostName);
-        let whoIsResult = await whois(hostName);
-        let whoIsCompany = whoIsResult.registrantOrganization;
+        let whoIsResult = await this.queryWhoIs(hostName);
+        let whoIsCompany = this.getRegistrantOrganisation(whoIsResult);
 
         let shortenedHostName = this.shortenDomain(hostName);    
         while(whoIsCompany == undefined && shortenedHostName.split('.').length > 1) {
             console.log(`Searching for company that might match the shortend version of hostname: ${hostName}, Shortened HostName: ${shortenedHostName}`);
-            whoIsResult = await whois(shortenedHostName);
-            whoIsCompany = whoIsResult.registrantOrganization;
+            whoIsResult = await this.queryWhoIs(shortenedHostName);
+            whoIsCompany = this.getRegistrantOrganisation(whoIsResult);
             shortenedHostName = this.shortenDomain(shortenedHostName);
         }
         

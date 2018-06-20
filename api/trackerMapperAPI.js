@@ -14,8 +14,23 @@ app.get('/', (req, res) => {
 });
 
 app.get('/host/:hostName', async (req, res) => {
-    let mapping = await mapper.processHostCompanyRequest(req.params.hostName);  
-    res.send(mapping);
+    let headersSent = false;
+    process.on('uncaughtException', function (err) {
+        res.send({"UNCAUGHT_ERROR":err});
+        headersSent = true;
+    });
+    try{
+        let mapping = await mapper.processHostCompanyRequest(req.params.hostName);  
+        res.send(mapping);
+    }
+    catch(err){
+        if(!headersSent) {
+            res.send({"ERROR":err});
+        }
+    }
 });
 
-app.listen(config.api.port, () => console.log(`listening on port ${config.api.port}`));
+app.listen(config.api.port, function() {
+    console.log(`listening on port ${config.api.port}`)
+});
+
