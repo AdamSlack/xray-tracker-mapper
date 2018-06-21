@@ -42,12 +42,12 @@ async function consumeCompanyHost(host, company) {
         console.log('Querying WhoIs.');
         const companyID = await mapper.mapHostNameToCompany(host);
         if(companyID == -1) {
-            console.log("Still unable to find company, defaulting to Uknown");
-            await db.insertCompanyHostPair(host, "Uknown");
+            console.log("Still unable to find company, defaulting to Unknown");
+            await db.insertCompanyHostPair(host, "Unknown");
             return;
         }
     }
-    await db.insertCompanyHostPair(company, host);
+    await db.insertCompanyHostPair(host, company);
     return;
 }
 
