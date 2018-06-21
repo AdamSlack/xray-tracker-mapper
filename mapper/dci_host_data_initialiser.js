@@ -16,6 +16,10 @@ const duds = new Set(
     ,"and a minor (20 total bytes)."
 ]);
 
+process.on('uncaughtException', function (err) {
+    console.log('Whois Really Did It This Time.');
+});
+
 async function consumeCompanyHost(host, company) {
     console.log(`Parsed hostname: ${host} and company name: ${company}`);
     const mappedCompanyID = await db.selectHostsCompany(host);
