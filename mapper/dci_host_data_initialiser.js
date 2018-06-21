@@ -7,6 +7,10 @@ const mapper = new Mapper();
 
 const fs = require('fs');
 
+var progressCounter = 0;
+var path = ""; 
+var lines = [];
+
 const duds = new Set(
     ["Unknown"
     ,"what does 's' represent in 'https'?"
@@ -16,8 +20,10 @@ const duds = new Set(
     ,"and a minor (20 total bytes)."
 ]);
 
-process.on('uncaughtException', function (err) {
+process.on('uncaughtException', async function (err) {
     console.log('Whois Really Did It This Time.');
+    delete lines;
+    parseFile(path, progressCounter);
 });
 
 async function consumeCompanyHost(host, company) {
@@ -45,18 +51,24 @@ async function consumeCompanyHost(host, company) {
     return;
 }
 
-async function main() {
-    let path = process.argv[2];
+async function parseFile(path, startPos = 0) {
     if(fs.existsSync(path)) {
+        lines = [];
         lines = fs.readFileSync(path, 'utf8').split('\n');
-        for (let line of lines){
-            parts = line.split(',');
+        for (let i = startPos; i < lines.length; i++) {
+            const line = lines[i];
+            progressCounter += 1;
+            const parts = line.split(',');
             if(parts.length == 3 ) {
-                await consumeCompanyHost(parts[1], parts[2])
+                await consumeCompanyHost(parts[1], parts[2]);
             }
         }
-
     }
+}
+
+async function main() {
+    path = process.argv[2];
+    await parseFile(path);
 }
 
 main();
