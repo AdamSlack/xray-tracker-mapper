@@ -29,6 +29,7 @@ async function consumeCompanyHost(host, company) {
     }
     if(duds.has(company)) {
         console.log('Dud company name was found.')
+        console.log('Querying WhoIs.');
         const companyID = await mapper.mapHostNameToCompany(host);
         if(companyID == -1) {
             console.log("Still unable to find company, defaulting to Uknown");
