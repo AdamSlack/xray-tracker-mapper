@@ -83,7 +83,7 @@ class Mapper {
             companyId = await db.selectCompanyID(whoIsCompany);
         }
 
-        await db.insertCompanyHostPair(whoIsCompany, hostName);
+        await db.insertCompanyHostPair(hostName, whoIsCompany);
         return companyId;
     }
 }

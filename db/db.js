@@ -131,7 +131,7 @@ class DB {
         }
     }
 
-    async insertCompanyHostPair(companyName, hostName) {
+    async insertCompanyHostPair(hostName, companyName) {
         console.log(`Inserting Company Host Pair - Company Name: ${companyName}, Host Name: ${hostName}`);
         try {
             let hostID = await this.selectHostNameID(hostName);
