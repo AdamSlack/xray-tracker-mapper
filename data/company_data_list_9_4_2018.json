@@ -5817,6 +5817,13 @@
     "owner_name": "eBay",
     "root_parent": null,
     "parent": null
+  },
+  {
+    "country": "us",
+    "doms": ["gfycat.com"],
+    "owner_name": "gfycat",
+    "root_parent": null,
+    "parent": null
   }
 ]
 }

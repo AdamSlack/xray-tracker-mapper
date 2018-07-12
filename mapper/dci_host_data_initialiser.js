@@ -8,7 +8,7 @@ const mapper = new Mapper();
 const fs = require('fs');
 
 var progressCounter = 0;
-var path = ""; 
+var path = "";
 var lines = [];
 
 const duds = new Set(
@@ -32,21 +32,21 @@ async function consumeCompanyHost(host, company) {
     if(mappedCompanyID != -1) {
         console.log(`host already mapped. Company ID = ${mappedCompanyID}`);
         return;
-    } 
+    }
     if(company.replace(" ", "") == "") {
         console.log("Empty Company Parsed.")
         company = 'Unknown';
     }
-    if(duds.has(company)) {
-        console.log('Dud company name was found.')
-        console.log('Querying WhoIs.');
-        const companyID = await mapper.mapHostNameToCompany(host);
-        if(companyID == -1) {
-            console.log("Still unable to find company, defaulting to Unknown");
-            await db.insertCompanyHostPair(host, "Unknown");
-            return;
-        }
-    }
+    // if(duds.has(company)) {
+    //     console.log('Dud company name was found.')
+    //     console.log('Querying WhoIs.');
+    //     const companyID = await mapper.mapHostNameToCompany(host);
+    //     if(companyID == -1) {
+    //         console.log("Still unable to find company, defaulting to Unknown");
+    //         await db.insertCompanyHostPair(host, "Unknown");
+    //         return;
+    //     }
+    // }
     await db.insertCompanyHostPair(host, company);
     return;
 }

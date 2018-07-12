@@ -9,8 +9,8 @@ create table host_names(
 
 create table companies(
     id              serial      not null primary key,
-    company_name    text        not null,
-    unique(company_name)
+    company_name    text        not null unique,
+    locale_iso_6391 text        not null
 );
 
 create table host_company_mappings(
@@ -18,5 +18,11 @@ create table host_company_mappings(
     host_name_id     serial      not null references host_names(id) primary key,
     company_id      serial      not null references companies(id)
 );
+
+create table company_categories(
+    company_id      serial      not null primary key references companies(id),
+    categories      text[]      not null
+);
+
 
 commit;

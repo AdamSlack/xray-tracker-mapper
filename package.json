@@ -4,7 +4,10 @@
   "description": "Service for the mapping of host names to company names",
   "main": "index.js",
   "dependencies": {
+    "async-request": "^1.2.0",
+    "cheerio": "^1.0.0-rc.2",
     "express": "^4.16.3",
+    "geoip-lite": "^1.2.2",
     "line-by-line": "^0.1.6",
     "line-reader": "^0.4.0",
     "pg": "^7.4.3",
